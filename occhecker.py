@@ -242,8 +242,15 @@ class occhecker:
         c = open('config.plist', 'rb')
         self.config = plistlib.load(c)
         print(self.pgreen('Done'))
+        
         time.sleep(0.05)
-
+        cc = self.cloverCheck()
+        if cc == False:
+            print(self.pred('This is a clover config please download an OpenCore one from https://github.com/acidanthera/OpenCorePkg'))
+            input('Press any key to exit... ')
+            exit(0)
+        
+        time.sleep(0.05)        
         print('Checking root config structure...')
         for x in self.configstruc:
             print(' - {}... '.format(x),end='')
@@ -275,6 +282,17 @@ class occhecker:
         time.sleep(1)
         self.checkquirks()
 
+    
+    def cloverCheck(self):
+        self.clear
+        print('Checking if clover config')
+        time.sleep(0.05)
+        try:
+            self.config['ACPI']['DSDT']
+            return False
+        except:
+            pass
+        
     def checkquirks(self):
         self.clear()
         self.title('Checking Quirks... ')
